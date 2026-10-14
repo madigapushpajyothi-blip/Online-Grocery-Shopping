@@ -1,0 +1,411 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FreshCart | Online Grocery Shopping Platform</title>
+  <meta name="description" content="A modern, user-friendly online grocery shopping platform with fresh produce, dairy, bakery, meat, and instant doorstep delivery." />
+  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+</head>
+<body>
+
+  <!-- Announcement Bar -->
+  <aside class="announcement-bar">
+    <span>⚡ Flash Deal: Use coupon <strong>FRESH20</strong> for 20% OFF your entire grocery basket!</span>
+    <span class="delivery-perk">🚚 Free delivery on orders over $35</span>
+  </aside>
+
+  <!-- Main Navigation Header -->
+  <header class="site-header">
+    <div class="header-container">
+      
+      <!-- Brand Logo -->
+      <a href="index.html" class="brand" aria-label="FreshCart Home">
+        <div class="brand-icon">🌱</div>
+        <div>Fresh<span>Cart</span></div>
+      </a>
+
+      <!-- Delivery Location Selector -->
+      <div class="delivery-location" title="Change delivery location">
+        <span class="icon">📍</span>
+        <div>
+          <div class="loc-label">Deliver to</div>
+          <div class="loc-val">Central Park West, NY</div>
+        </div>
+      </div>
+
+      <!-- Real-time Product Search -->
+      <div class="search-wrapper">
+        <div class="search-input-group">
+          <span class="search-icon">🔍</span>
+          <input 
+            type="text" 
+            id="searchInput" 
+            class="search-input" 
+            placeholder="Search fresh fruits, milk, organic vegetables, bakery..." 
+            autocomplete="off" 
+            aria-label="Search grocery products"
+          />
+          <button id="searchClear" class="search-clear" title="Clear search">✕</button>
+        </div>
+      </div>
+
+      <!-- Header Actions (Wishlist & Cart) -->
+      <div class="header-actions">
+        <button id="wishlistBtn" class="action-btn wishlist-btn" title="View Wishlist" aria-label="Wishlist">
+          <span>❤️</span>
+          <span class="action-label">Wishlist</span>
+          <span id="wishlistBadge" class="drawer-count-badge">0</span>
+        </button>
+
+        <button id="cartBtn" class="action-btn cart-btn" title="Open Shopping Cart" aria-label="Cart">
+          <span>🛒</span>
+          <span id="cartBadge" class="cart-badge">0</span>
+          <span id="cartPricePreview" class="cart-price-preview">$0.00</span>
+        </button>
+      </div>
+
+    </div>
+  </header>
+
+  <!-- Main Page Content -->
+  <main>
+
+    <!-- Promotional Hero Banner -->
+    <section class="hero-section">
+      <div class="hero-banner">
+        <div class="hero-content">
+          <div class="hero-tag">✨ 100% Organic & Farm Fresh</div>
+          <h1 class="hero-title">Daily Groceries Delivered Fresh to Your Doorstep.</h1>
+          <p class="hero-subtitle">
+            Experience hand-picked fresh fruits, crisp vegetables, farm dairy, and pantry essentials delivered in as little as 30 minutes.
+          </p>
+          <div class="hero-promo-coupon">
+            <span>Special Welcome Offer:</span>
+            <span class="promo-code-badge">FRESH20</span>
+            <span>(20% OFF)</span>
+          </div>
+        </div>
+
+        <div class="hero-features">
+          <div class="hero-feature-card">
+            <div class="feat-icon">⚡</div>
+            <div class="feat-title">30 Min Delivery</div>
+            <div class="feat-desc">Rapid doorstep fulfillment</div>
+          </div>
+          <div class="hero-feature-card">
+            <div class="feat-icon">🥬</div>
+            <div class="feat-title">Farm-To-Table</div>
+            <div class="feat-desc">Direct local organic harvest</div>
+          </div>
+          <div class="hero-feature-card">
+            <div class="feat-icon">🛡️</div>
+            <div class="feat-title">Quality Assured</div>
+            <div class="feat-desc">100% money-back guarantee</div>
+          </div>
+          <div class="hero-feature-card">
+            <div class="feat-icon">💳</div>
+            <div class="feat-title">Flexible Pay</div>
+            <div class="feat-desc">Cards, COD & Digital UPI</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Category Filter Bar -->
+    <section class="categories-section" aria-label="Product Categories">
+      <div id="categoriesNav" class="category-pills-container">
+        <!-- Injected dynamically via app.js -->
+      </div>
+    </section>
+
+    <!-- Catalog Controls (Results Count & Sort Filter) -->
+    <section class="catalog-controls">
+      <div class="results-meta">
+        <span id="resultsCount">Loading grocery catalog...</span>
+      </div>
+
+      <div class="filter-sort-controls">
+        <div class="control-select-group">
+          <label for="sortSelect">Sort By:</label>
+          <select id="sortSelect">
+            <option value="recommended">Featured / Recommended</option>
+            <option value="price-asc">Price: Low to High</option>
+            <option value="price-desc">Price: High to Low</option>
+            <option value="rating">Highest Rated ★</option>
+            <option value="name">Product Name (A-Z)</option>
+          </select>
+        </div>
+      </div>
+    </section>
+
+    <!-- Product Grid Catalog -->
+    <section class="catalog-section" aria-label="Available Products">
+      <div id="productsGrid" class="products-grid">
+        <!-- Rendered dynamically via app.js -->
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Slide-out Shopping Cart Drawer -->
+  <div id="drawerBackdrop" class="drawer-backdrop"></div>
+  <aside id="cartDrawer" class="cart-drawer" aria-label="Shopping Cart Drawer">
+    <div class="drawer-header">
+      <div class="drawer-title-wrap">
+        <span style="font-size: 1.4rem;">🛒</span>
+        <h2 class="drawer-title">Shopping Cart</h2>
+        <span id="cartDrawerCount" class="drawer-count-badge">0</span>
+      </div>
+      <button id="closeCartBtn" class="btn-close-drawer" title="Close Cart">✕</button>
+    </div>
+
+    <!-- Free Delivery Progress Bar -->
+    <div class="shipping-progress-banner">
+      <div id="shippingText" class="shipping-progress-text">
+        <span>Add $35.00 for FREE delivery</span>
+        <span>$35.00</span>
+      </div>
+      <div class="progress-bar-track">
+        <div id="shippingFill" class="progress-bar-fill" style="width: 0%;"></div>
+      </div>
+    </div>
+
+    <!-- Scrollable Items Container -->
+    <div id="cartItemsList" class="cart-items-list">
+      <!-- Items dynamically injected here -->
+    </div>
+
+    <!-- Empty Cart Fallback -->
+    <div id="cartEmptyView" class="cart-empty-view">
+      <div class="cart-empty-icon">🧺</div>
+      <h3 class="cart-empty-title">Your Cart is Currently Empty</h3>
+      <p class="cart-empty-desc">Looks like you haven't added any fresh groceries yet. Browse our aisles and find fresh picks!</p>
+    </div>
+
+    <!-- Cart Footer with Pricing & Checkout -->
+    <div id="cartFooter" class="drawer-footer">
+      <!-- Promo Code Input -->
+      <div class="promo-input-form">
+        <input 
+          type="text" 
+          id="promoInput" 
+          class="promo-input" 
+          placeholder="Promo code (e.g. FRESH20)" 
+          aria-label="Enter promo discount code"
+        />
+        <button id="applyPromoBtn" class="btn-apply-promo">Apply</button>
+      </div>
+
+      <div id="promoActiveTag" class="promo-active-tag" style="display: none;">
+        <span id="promoActiveText">Coupon Applied</span>
+        <button id="removePromoBtn">Remove</button>
+      </div>
+
+      <!-- Bill Breakdown -->
+      <div class="bill-summary">
+        <div class="bill-row">
+          <span>Items Subtotal:</span>
+          <span id="subtotalPrice">$0.00</span>
+        </div>
+        <div id="discountRow" class="bill-row discount-row" style="display: none;">
+          <span>Promotional Discount:</span>
+          <span id="discountAmount">-$0.00</span>
+        </div>
+        <div class="bill-row">
+          <span>Delivery Fee:</span>
+          <span id="deliveryFee">$3.99</span>
+        </div>
+        <div class="bill-row">
+          <span>Estimated Sales Tax (5%):</span>
+          <span id="taxAmount">$0.00</span>
+        </div>
+        <div class="bill-row total-row">
+          <span>Total to Pay:</span>
+          <span id="finalTotalPrice">$0.00</span>
+        </div>
+      </div>
+
+      <button id="checkoutBtn" class="btn-checkout">
+        Proceed to Secure Checkout →
+      </button>
+    </div>
+  </aside>
+
+  <!-- Quick View Product Modal -->
+  <div id="quickViewModal" class="modal-overlay" aria-hidden="true">
+    <div class="modal-card" id="quickViewCard">
+      <!-- Injected dynamically on click -->
+    </div>
+  </div>
+
+  <!-- Wishlist Modal -->
+  <div id="wishlistModal" class="modal-overlay" aria-hidden="true">
+    <div class="modal-card" style="max-width: 520px; padding: 24px;">
+      <button id="closeWishlistBtn" class="modal-close-btn">✕</button>
+      <h3 style="font-size: 1.3rem; font-weight: 800; margin-bottom: 4px;">❤️ Your Saved Items</h3>
+      <p style="color: #64748b; font-size: 0.85rem; margin-bottom: 16px;">Quickly transfer your favorite staples directly into your shopping cart.</p>
+      <div id="wishlistItemsList" style="max-height: 400px; overflow-y: auto;">
+        <!-- Injected dynamically -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Checkout Modal -->
+  <div id="checkoutModal" class="modal-overlay" aria-hidden="true">
+    <div class="modal-card">
+      <button id="closeCheckoutBtn" class="modal-close-btn">✕</button>
+      <div class="checkout-modal-body">
+        <h2 class="checkout-modal-title">Secure Checkout</h2>
+        <p class="checkout-modal-subtitle">Confirm your delivery details and choose your preferred payment option.</p>
+
+        <form id="checkoutForm">
+          <div class="checkout-form-grid">
+            <div class="form-field">
+              <label for="custName">Full Name *</label>
+              <input type="text" id="custName" required placeholder="e.g. Sarah Jenkins" value="Sarah Jenkins" />
+            </div>
+            <div class="form-field">
+              <label for="custPhone">Phone Number *</label>
+              <input type="tel" id="custPhone" required placeholder="+1 (555) 019-2834" value="+1 (555) 019-2834" />
+            </div>
+
+            <div class="form-field form-field-full">
+              <label for="custAddress">Delivery Street Address *</label>
+              <input type="text" id="custAddress" required placeholder="Apartment, suite, street address" value="742 Evergreen Terrace, Apt 4B" />
+            </div>
+
+            <div class="form-field">
+              <label for="custCity">City *</label>
+              <input type="text" id="custCity" required placeholder="City" value="New York" />
+            </div>
+            <div class="form-field">
+              <label for="custZip">Zip / Postal Code *</label>
+              <input type="text" id="custZip" required placeholder="10001" value="10001" />
+            </div>
+
+            <div class="form-field form-field-full">
+              <label for="deliverySlot">Preferred Delivery Window *</label>
+              <select id="deliverySlot">
+                <option value="ASAP (30-45 mins)">⚡ ASAP Express (Within 30-45 mins)</option>
+                <option value="Today Evening (5:00 PM - 7:00 PM)">Today Evening (5:00 PM - 7:00 PM)</option>
+                <option value="Tomorrow Morning (8:00 AM - 10:00 AM)">Tomorrow Morning (8:00 AM - 10:00 AM)</option>
+                <option value="Tomorrow Evening (6:00 PM - 8:00 PM)">Tomorrow Evening (6:00 PM - 8:00 PM)</option>
+              </select>
+            </div>
+          </div>
+
+          <div style="margin-bottom: 8px; font-size: 0.85rem; font-weight: 700;">Select Payment Method:</div>
+          <div class="payment-options-group">
+            <div class="payment-card-option active" data-method="card">
+              <div class="pay-icon">💳</div>
+              <div class="pay-name">Credit / Debit Card</div>
+            </div>
+            <div class="payment-card-option" data-method="cod">
+              <div class="pay-icon">💵</div>
+              <div class="pay-name">Cash on Delivery</div>
+            </div>
+            <div class="payment-card-option" data-method="upi">
+              <div class="pay-icon">📱</div>
+              <div class="pay-name">UPI / Digital Wallet</div>
+            </div>
+          </div>
+
+          <button type="submit" class="btn-checkout" style="font-size: 1.05rem;">
+            Place Grocery Order Now 🚀
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Order Success Confirmation Modal -->
+  <div id="orderSuccessModal" class="modal-overlay" aria-hidden="true">
+    <div class="modal-card">
+      <button id="closeSuccessBtn" class="modal-close-btn">✕</button>
+      <div class="order-success-view">
+        <div class="success-check-icon">✓</div>
+        <h2 class="success-title">Order Confirmed!</h2>
+        <p class="success-desc">Thank you for shopping with FreshCart! Your order has been placed and our local store team is preparing your fresh basket.</p>
+
+        <div id="orderReceiptBox" class="order-receipt-card">
+          <!-- Itemized order receipt rendered dynamically -->
+        </div>
+
+        <div class="success-actions">
+          <button id="printReceiptBtn" class="action-btn wishlist-btn" style="padding: 10px 20px;">
+            🖨️ Print Receipt
+          </button>
+          <button id="continueShoppingBtn" class="btn-add-cart" style="padding: 10px 20px;">
+            Continue Shopping 🛒
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div id="toastContainer" class="toast-container" aria-live="polite"></div>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="footer-container">
+      <div>
+        <div class="footer-brand">
+          <span>🌱</span> FreshCart
+        </div>
+        <p class="footer-desc">
+          Your neighborhood online grocery supermarket. Delivering farm-fresh produce, dairy, bakery delights, and pantry staples in minutes.
+        </p>
+      </div>
+
+      <div class="footer-col">
+        <h4>Aisles</h4>
+        <ul class="footer-links">
+          <li><a href="#fruits-veg">Fruits & Vegetables</a></li>
+          <li><a href="#dairy-eggs">Dairy & Free-range Eggs</a></li>
+          <li><a href="#bakery">Fresh Bakery & Bread</a></li>
+          <li><a href="#meat-seafood">Meat & Seafood</a></li>
+          <li><a href="#pantry">Pantry & Spices</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Customer Care</h4>
+        <ul class="footer-links">
+          <li><a href="#">Help & FAQs</a></li>
+          <li><a href="#">Track Live Order</a></li>
+          <li><a href="#">Return & Refund Policy</a></li>
+          <li><a href="#">Shipping Rates</a></li>
+          <li><a href="#">Contact Support</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Why FreshCart</h4>
+        <ul class="footer-links">
+          <li><a href="#">100% Organic Guarantee</a></li>
+          <li><a href="#">Eco-Friendly Packaging</a></li>
+          <li><a href="#">Local Farmers Partnership</a></li>
+          <li><a href="#">Cold-Chain Delivery</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <div>© 2026 FreshCart Online Grocery Shopping Platform. All rights reserved.</div>
+      <div style="display: flex; gap: 16px;">
+        <span>🔒 256-bit SSL Secure Checkout</span>
+        <span>⚡ 30-Minute Guaranteed Delivery</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/products.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
